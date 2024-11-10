@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Tester Game</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #ff80bf, #ffb3d9); /* Pink gradient */
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: #333;
+    }
+
+    .container {
+      text-align: center;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      transition: transform 0.3s ease;
+    }
+
+    .container:hover {
+      transform: scale(1.05);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #ff1493;
+      margin-bottom: 20px;
+      font-weight: 600;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .inputs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 12px 18px;
+      font-size: 16px;
+      border: 2px solid #ff1493;
+      border-radius: 10px;
+      width: 130px;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #ff69b4;
+      box-shadow: 0 0 8px rgba(255, 105, 180, 0.6);
+    }
+
+    button {
+      padding: 14px 22px;
+      font-size: 18px;
+      background-color: #ff1493;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #ff69b4;
+      transform: translateY(-3px);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .heart-container {
+      position: relative;
+      display: inline-block;
+      font-size: 60px;
+    }
+
+    .heart {
+      display: inline-block;
+      position: relative;
+      z-index: 1;
+      transition: color 2s ease;
+    }
+
+    .result {
+      font-size: 20px;
+      color: #ff1493;
+      margin-top: 20px;
+      font-weight: bold;
+      transition: opacity 0.5s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .result.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .heart-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #ff1493;
+      clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%, 0% 0%);
+      transform: scaleY(0);
+      z-index: 0;
+      animation: fillHeart 2s forwards;
+    }
+
+    @keyframes fillHeart {
+      0% {
+        transform: scaleY(0);
+      }
+      100% {
+        transform: scaleY(1);
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Love Tester Game</h1>
+    <div class="inputs">
+      <input type="text" id="name1" placeholder="Enter first name" />
+      <div class="heart-container">
+        <span id="heart" class="heart">🤍</span>
+      </div>
+      <input type="text" id="name2" placeholder="Enter second name" />
+    </div>
+    <button onclick="testLove()">Check Compatibility</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const loveTexts = [
+      "You're my one and only ❤️",
+      "Love at first sight 💖",
+      "Forever and always 💘",
+      "My heart beats for you 💓",
+      "You are my soulmate 💕",
+      "Together, we're unstoppable 👫",
+      "My love for you is endless 💝",
+      "You complete me ❤️",
+      "You are my everything 💞",
+      "True love never ends 💌"
+    ];
+
+    function testLove() {
+      const name1 = document.getElementById('name1').value;
+      const name2 = document.getElementById('name2').value;
+      const heart = document.getElementById('heart');
+      const resultText = document.getElementById('result');
+      const heartContainer = document.querySelector('.heart-container');
+
+      let existingFill = document.querySelector('.heart-fill');
+      if (existingFill) {
+        existingFill.remove();
+      }
+
+      const heartFill = document.createElement('div');
+      heartFill.classList.add('heart-fill');
+      heartContainer.appendChild(heartFill);
+
+      const compatibility = 100;
+      const randomMessage = loveTexts[Math.floor(Math.random() * loveTexts.length)];
+
+      setTimeout(() => {
+        heart.innerHTML = "❤️";
+
+        const heartText = document.createElement("div");
+        heartText.innerHTML = `${compatibility}%`;
+        heartText.style.position = "absolute";
+        heartText.style.top = "30%";
+        heartText.style.left = "25%";
+        heartText.style.fontSize = "24px";
+        heartText.style.color = "white";
+        heartText.style.fontWeight = "bold";
+        heartText.style.zIndex = "10";
+        heartContainer.appendChild(heartText);
+
+        resultText.innerHTML = `
+          The love compatibility between <strong>${name1}</strong> and <strong>${name2}</strong> is <strong>${compatibility}%</strong>!<br>
+          ${randomMessage}
+        `;
+        resultText.style.opacity = 1;
+        resultText.classList.add('show');
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>
